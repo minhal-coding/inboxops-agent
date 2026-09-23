@@ -19,8 +19,8 @@ If an action outcome is unknown, choose Reconcile. It reads external state and n
 | Real local model | PASS | [Actual smoke output](../evidence/model-check-output.txt): Ollama 0.34.3, Qwen3 4B Instruct, JSON and tool selection |
 | Real semantic retrieval | PASS | [Eight query scores](../evidence/retrieval-check.json), real EmbeddingGemma and approved fictional Markdown |
 | Real-model MCP loop with fictional Google | PASS | [Observed integration](../evidence/model-integration.json): three classifications, actual MCP reads, exact source chunk, zero writes |
-| Real OAuth | BLOCKED | Dedicated account not identified/connected; current Cloud browser session requires two-step verification |
-| Real Google free/busy | BLOCKED | Requires dedicated account consent and configured owned calendar |
+| Real OAuth | BLOCKED | Client and isolated test boundaries configured; user consent and denial/reconnect test pending |
+| Real Google free/busy | BLOCKED | Owned test calendar configured; requires user consent and a live availability read |
 | Approved Gmail draft | BLOCKED | Requires user review and exact draft approval in the app |
 | Approved Calendar hold | BLOCKED | Requires user review and exact event approval in the app |
 | Approved Gmail send | BLOCKED | Requires user review and exact send approval in the app |
@@ -28,4 +28,4 @@ If an action outcome is unknown, choose Reconcile. It reads external state and n
 | Duplicate retry | BLOCKED | Requires the same actual approved action and provider count/readback; preserve the database |
 | Remote CI | PASS | [Actions for ea3ee80](https://github.com/minhal-coding/inboxops-agent/actions/runs/35921222310), offline adapters only |
 
-No real email was sent and no real Calendar event was created. Passing local inference, retrieval, or offline CI does not complete this live acceptance procedure. The browser was opened for automated Google Cloud setup at the user's request; account selection and the Cloud two-step verification prerequisite remain user-dependent. Port 4317 was occupied by the separate RepoMedic preview and was not stopped.
+No real email was sent and no real Calendar event was created. Passing local inference, retrieval, or offline CI does not complete this live acceptance procedure. At the user's request, a dedicated Cloud project was created, Gmail and Calendar APIs enabled, External/Testing audience configured, and the four documented scopes saved. The Web client has only the exact loopback callback. Its downloaded JSON is outside Git and restricted to the current Windows user; local configuration is ignored. The user explicitly selected an existing receiving account with an isolated test label after being informed that OAuth read access covers more than one label. An empty private owned test calendar was created. InboxOps now runs in live mode on loopback port 4317, which was free; no other project was stopped. Google consent remains a user-only step.

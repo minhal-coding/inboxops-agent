@@ -86,7 +86,7 @@ npm run model:integration
 | SQLite retrieval with relevant/irrelevant query            | PASS with deterministic fixture embeddings                       |
 | Local LLM inference + semantic embedding retrieval         | **PASS — real smoke test and eight semantic retrieval seed queries**                                 |
 | Real model + fictional Google MCP loop | **PASS — [three cases, zero writes](evidence/model-integration.json)** |
-| Real test Google OAuth                                     | **UNVERIFIED — no test client/account connected**                |
+| Real test Google OAuth                                     | **UNVERIFIED — client configured; user consent pending**                |
 | Real free/busy, event, approved send, live duplicate check | **UNVERIFIED**                                                   |
 | Remote GitHub CI                                           | **PASS — [verified code run](https://github.com/minhal-coding/inboxops-agent/actions/runs/35921222310)** |
 | Public Google multi-user onboarding                        | **Not approved / not offered**                                   |

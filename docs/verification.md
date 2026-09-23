@@ -14,7 +14,7 @@ Development date: 2026-09-23. Windows, Node 24.18.0, npm 11.16.0. Public source 
 | `npm run evidence:fixture`                      | PASS            | Actual linked MCP reads/writes, fixture receipts, same send receipt on retry, one simulated send                  |
 | `npm audit`                                     | PASS            | Zero reported dependency vulnerabilities at verification time                                                     |
 | `npm run model:check`                           | **PASS**        | Ollama 0.34.3, explicit Qwen3 4B Instruct, JSON/tool selection and 768-dimensional embeddings                                              |
-| Live Google OAuth/freebusy/draft/event/send     | **UNVERIFIED**  | Dedicated client and explicit test-account connection missing                                                     |
+| Live Google OAuth/freebusy/draft/event/send     | **UNVERIFIED**  | Client, APIs, test audience, label and owned calendar configured; explicit user connection pending                                                     |
 | Live semantic retrieval                         | **PASS**        | Eight real EmbeddingGemma retrieval seed queries; exact chunk matches and unrelated rejection                                                                                 |
 | CodeRabbit                                      | **BLOCKED**     | Official installer rejected Windows/MINGW64; no review score claimed                                              |
 
