@@ -1,0 +1,6 @@
+{
+  "status": "BLOCKED",
+  "at": "2026-09-23T20:21:44.333Z",
+  "model": "qwen3:4b",
+  "reason": "fetch failed"
+}

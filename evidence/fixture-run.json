@@ -1,0 +1,56 @@
+{
+  "at": "2026-09-23T20:21:45.367Z",
+  "mode": "FIXTURE ONLY",
+  "liveAcceptance": "BLOCKED / UNVERIFIED",
+  "model": "fixture-script (NOT an LLM)",
+  "modelVersion": "scripted fixture v1, no inference",
+  "mcpTools": [
+    "gmail.get_thread",
+    "knowledge.search",
+    "calendar.freebusy",
+    "gmail.create_draft",
+    "calendar.create_event",
+    "gmail.send_approved_draft"
+  ],
+  "selectedReadTools": [
+    {
+      "tool": "gmail.get_thread",
+      "at": "2026-09-23T20:21:45.356Z"
+    },
+    {
+      "tool": "knowledge.search",
+      "at": "2026-09-23T20:21:45.358Z"
+    },
+    {
+      "tool": "calendar.freebusy",
+      "at": "2026-09-23T20:21:45.358Z"
+    }
+  ],
+  "citationIds": [
+    "28bbe908aaa7cef4"
+  ],
+  "approvalHash": "71a9f98809a2b1a458e18f39dc9405543b0426e10d9f33487fb7437fcd8cc922",
+  "receipts": [
+    {
+      "id": "fixture-draft-a79c5fb050ea",
+      "verified": true,
+      "kind": "draft",
+      "mode": "fixture"
+    },
+    {
+      "id": "fixture-event-095dbefffe76",
+      "verified": true,
+      "kind": "event",
+      "mode": "fixture"
+    },
+    {
+      "id": "fixture-send-91604fcc4e94",
+      "verified": true,
+      "kind": "send",
+      "mode": "fixture"
+    }
+  ],
+  "retrySameReceipt": true,
+  "sendCount": 1,
+  "irrelevantRetrieval": []
+}
