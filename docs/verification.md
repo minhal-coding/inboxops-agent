@@ -6,7 +6,7 @@ Development date: 2026-09-23. Windows, Node 24.18.0, npm 11.16.0. Public source 
 | ----------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `npm run typecheck`                             | PASS            | Static types                                                                                                      |
 | `npm run build`                                 | PASS            | Production React/Vite build                                                                                       |
-| `npm test`                                      | PASS (31 tests) | Deterministic policy, adapter contract, MCP, SQLite and HTTP checks                                               |
+| `npm test`                                      | PASS (33 tests) | Deterministic policy, adapter contract, MCP, SQLite and HTTP checks                                               |
 | `npm run test:e2e`                              | PASS            | Actual Chromium fixture flow, source evidence, three approvals, verified fixture receipts, reload and input error |
 | axe WCAG 2 A/AA at 1440×1000, 768×1024, 390×844 | PASS            | No reported violations on the tested plan view; not a full accessibility certification                            |
 | Screenshot inspection                           | PASS            | Desktop/tablet/mobile layout and wrapping visually inspected; fixture banner present                              |
@@ -30,4 +30,4 @@ All images under `evidence/fixture-*.png` show fictional data. `evidence/fixture
 
 The workflow template in `docs/ci-workflow.yml` runs dependency installation, typecheck, tests, build, Chromium/axe fixture verification, MCP inspection and dependency audit on Ubuntu with Node 24. It requires no personal OAuth credentials or model. Check the linked GitHub Actions run for the published revision; its result is separate from local verification.
 
-Remote CI status: **BLOCKED**. GitHub rejected the initial push of .github/workflows/ci.yml because the authenticated CLI token lacks the workflow scope. Source and sanitized evidence are published with the workflow held as a template. To enable it, the user must run gh auth refresh -h github.com -s workflow; then move the template to .github/workflows/ci.yml, commit, push, and inspect the actual run. No remote CI pass is claimed.
+Remote CI status: **PASS** for workflow activation commit `4864ab9`. After the user completed GitHub device authorization, the CLI confirmed `workflow` scope. The reviewed template is active at `.github/workflows/ci.yml`. [Actual Actions run 35916935765](https://github.com/minhal-coding/inboxops-agent/actions/runs/35916935765) passed on Ubuntu / Node 24. This proves the offline pipeline, not local model or Google acceptance. Later changes require their own run.

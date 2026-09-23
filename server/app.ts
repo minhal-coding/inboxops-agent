@@ -28,7 +28,6 @@ export async function makeApp(
   const configured = !!(
     account &&
     process.env.TEST_RECIPIENTS &&
-    process.env.TEST_LABEL_ID &&
     process.env.TEST_CALENDAR_ID
   );
   const provider =
@@ -41,7 +40,8 @@ export async function makeApp(
             process.env
               .TEST_RECIPIENTS!.split(",")
               .map((x) => x.trim().toLowerCase()),
-            process.env.TEST_LABEL_ID!,
+            process.env.TEST_LABEL_ID ||
+              `name:${process.env.TEST_LABEL_NAME || "InboxOps-Test"}`,
             process.env.TEST_CALENDAR_ID!,
           )
         : undefined;

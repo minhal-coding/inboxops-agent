@@ -85,7 +85,7 @@ npm run model:check
 | Local LLM inference + semantic embedding retrieval         | **BLOCKED — Ollama unavailable**                                 |
 | Real test Google OAuth                                     | **UNVERIFIED — no test client/account connected**                |
 | Real free/busy, event, approved send, live duplicate check | **UNVERIFIED**                                                   |
-| Remote GitHub CI                                           | **BLOCKED — CLI token lacks workflow scope; template preserved** |
+| Remote GitHub CI                                           | **PASS — [workflow activation run](https://github.com/minhal-coding/inboxops-agent/actions/runs/35916935765)** |
 | Public Google multi-user onboarding                        | **Not approved / not offered**                                   |
 
 [Verification detail](docs/verification.md) · [Privacy and threat model](docs/privacy-threat-model.md) · [Live acceptance procedure](docs/live-acceptance.md) · [Evaluation cases](fixtures/evaluation.json) · [Design system](docs/design-system.md)

@@ -13,6 +13,8 @@
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
     "model:check": "node --env-file-if-exists=.env --import tsx scripts/model-check.ts",
+    "model:integration": "node --env-file-if-exists=.env --import tsx scripts/model-integration.ts",
+    "setup:google": "tsx scripts/setup-google.ts",
     "mcp:inspect": "tsx scripts/mcp-inspect.ts",
     "mcp:server": "tsx server/stdio.ts",
     "start": "node --env-file-if-exists=.env --import tsx server/index.ts",

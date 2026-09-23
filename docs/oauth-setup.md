@@ -27,9 +27,9 @@ These are free local models, but downloads require disk space and memory. The de
 ## 3. Prepare the test boundaries
 
 - In the dedicated Gmail account, create an **InboxOps-Test** label and apply it only to test emails. Use one sender address you also own. Keep the mailbox small.
-- Find the label ID through Gmail's official [labels.list API reference / Try it](https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.labels/list) while authenticated **as the test account**. The ID is normally `Label_...`, not the display name.
+- The app resolves the exact user label **InboxOps-Test** through a read-only label lookup. Missing or ambiguous labels stop processing; there is no mailbox-wide fallback.
 - Create a dedicated secondary calendar owned by the test account in Google Calendar. In its **Settings → Integrate calendar**, copy **Calendar ID**. Shared calendars you do not own are outside V1 scope.
-- Copy `.env.example` to `.env`. Set `INBOXOPS_MODE=live`, the external `GOOGLE_OAUTH_CLIENT_FILE` path, `TEST_ACCOUNT`, `TEST_RECIPIENTS` (comma-separated addresses you control), `TEST_LABEL_ID`, and `TEST_CALENDAR_ID`. These values remain local. If using the official labels API explorer for the label ID, it is a separate Google authorization; never paste its tokens anywhere.
+- Run `npm run setup:google` in your local terminal and enter the external client-file path, dedicated account, test sender addresses, and calendar ID. The helper validates the client type and callback, then creates ignored `.env` without copying the client secret. It refuses to overwrite an existing `.env`. Alternatively, copy `.env.example` and configure these values locally. `TEST_LABEL_ID` remains an optional override for an explicit label ID.
 
 ## 4. Connect in the running app
 

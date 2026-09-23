@@ -1,0 +1,1 @@
+For this fictional scheduling evaluation, normal working hours are Monday to Friday, 13:00–17:00 UTC. The preferred meeting duration is 30 minutes. Ask the user to resolve ambiguous dates and time zones.

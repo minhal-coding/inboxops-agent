@@ -71,6 +71,58 @@ function provider(
     "test-calendar",
   );
 }
+
+test("Google resolves only the exact dedicated user label and caches its ID", async () => {
+  const calls: string[] = [];
+  const pr = new GoogleProvider(
+    {
+      request: async (url: string) => {
+        calls.push(url);
+        if (url.endsWith("/labels"))
+          return {
+            labels: [{ id: "Label_test", name: "InboxOps-Test", type: "user" }],
+          };
+        assert.ok(url.includes("labelIds=Label_test"));
+        return { messages: [] };
+      },
+    } as unknown as OAuth,
+    p.account,
+    [p.recipient],
+    "name:InboxOps-Test",
+    "test-calendar",
+  );
+  await pr.list();
+  await pr.list();
+  assert.equal(calls.filter((url) => url.endsWith("/labels")).length, 1);
+});
+
+test("Google missing, system, and ambiguous labels never trigger mailbox reads", async () => {
+  for (const labels of [
+    [],
+    [{ id: "INBOX", name: "InboxOps-Test", type: "system" }],
+    [
+      { id: "a", name: "InboxOps-Test", type: "user" },
+      { id: "b", name: "InboxOps-Test", type: "user" },
+    ],
+  ]) {
+    let calls = 0;
+    const pr = new GoogleProvider(
+      {
+        request: async (url: string) => {
+          calls++;
+          assert.ok(url.endsWith("/labels"));
+          return { labels };
+        },
+      } as unknown as OAuth,
+      p.account,
+      [p.recipient],
+      "name:InboxOps-Test",
+      "test-calendar",
+    );
+    await assert.rejects(pr.list(), /No mailbox-wide fallback/);
+    assert.equal(calls, 1);
+  }
+});
 test("Google draft uses exact RFC reply headers and verifies readback", async () => {
   let raw = "";
   const pr = provider(async (url, method, data) => {

@@ -101,6 +101,21 @@ function plain(payload: any): string {
 }
 export class GoogleProvider implements Provider {
   mode = "live" as const;
+  private resolvedLabel?: string;
+  private async labelId() {
+    if (!this.label.startsWith("name:")) return this.label;
+    if (this.resolvedLabel) return this.resolvedLabel;
+    const name = this.label.slice(5);
+    const result = await this.oauth.request(`${gmail}/labels`);
+    const matches = (result.labels || []).filter(
+      (l: any) => l.name === name && l.type === "user",
+    );
+    if (matches.length !== 1)
+      throw Error(
+        "Create exactly one dedicated InboxOps-Test label, then retry. No mailbox-wide fallback is allowed.",
+      );
+    return (this.resolvedLabel = matches[0].id);
+  }
   constructor(
     private oauth: OAuth,
     public account: string,
@@ -114,8 +129,9 @@ export class GoogleProvider implements Provider {
       );
   }
   async list() {
+    const label = await this.labelId();
     const data = await this.oauth.request(
-      `${gmail}/messages?labelIds=${encodeURIComponent(this.label)}&q=${encodeURIComponent("newer_than:7d -in:sent")}&maxResults=10`,
+      `${gmail}/messages?labelIds=${encodeURIComponent(label)}&q=${encodeURIComponent("newer_than:7d -in:sent")}&maxResults=10`,
     );
     const ids = [
       ...new Set<string>((data.messages || []).map((m: any) => m.threadId)),
@@ -125,13 +141,13 @@ export class GoogleProvider implements Provider {
     return out;
   }
   async thread(id: string): Promise<Thread> {
+    const label = await this.labelId();
     const t = await this.oauth.request(
       `${gmail}/threads/${encodeURIComponent(id)}?format=full`,
     );
     const messages = t.messages || [];
     const incoming = messages.filter(
-      (m: any) =>
-        m.labelIds?.includes(this.label) && !m.labelIds?.includes("SENT"),
+      (m: any) => m.labelIds?.includes(label) && !m.labelIds?.includes("SENT"),
     );
     const m = incoming.at(-1);
     if (!m || Number(m.internalDate) < Date.now() - 7 * 86400000)

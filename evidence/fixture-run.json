@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-23T20:21:45.367Z",
+  "at": "2026-09-23T20:41:19.429Z",
   "mode": "FIXTURE ONLY",
   "liveAcceptance": "BLOCKED / UNVERIFIED",
   "model": "fixture-script (NOT an LLM)",
@@ -15,21 +15,21 @@
   "selectedReadTools": [
     {
       "tool": "gmail.get_thread",
-      "at": "2026-09-23T20:21:45.356Z"
+      "at": "2026-09-23T20:41:19.418Z"
     },
     {
       "tool": "knowledge.search",
-      "at": "2026-09-23T20:21:45.358Z"
+      "at": "2026-09-23T20:41:19.419Z"
     },
     {
       "tool": "calendar.freebusy",
-      "at": "2026-09-23T20:21:45.358Z"
+      "at": "2026-09-23T20:41:19.420Z"
     }
   ],
   "citationIds": [
     "28bbe908aaa7cef4"
   ],
-  "approvalHash": "71a9f98809a2b1a458e18f39dc9405543b0426e10d9f33487fb7437fcd8cc922",
+  "approvalHash": "c44dbe7df1c6703d11eec6a8fbe21d989dcb81920d67386accab89aedebfea81",
   "receipts": [
     {
       "id": "fixture-draft-a79c5fb050ea",
