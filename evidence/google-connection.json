@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-09-23T23:38:51Z",
+  "mode": "live",
+  "oauth": {
+    "status": "PASS",
+    "observed": "Local app redirected to connection=success and displayed the configured account as Connected",
+    "validation": "OAuth callback code requires all four scopes and a matching Gmail profile before setting Connected",
+    "denialReconnect": "User reports canceling once before successful connection; denial was not independently captured",
+    "disconnect": "NOT YET TESTED"
+  },
+  "setup": {
+    "apis": "Gmail and Calendar enabled",
+    "audience": "External / Testing; designated receiving account added",
+    "client": "Web application; exact loopback callback",
+    "credentials": "Downloaded outside repository; file ACL restricted to current Windows user",
+    "boundary": "User-approved existing account; isolated test label and private owned secondary calendar",
+    "writes": "One incoming setup email explicitly authorized by the user, sent through Gmail UI, and labeled. No InboxOps draft, event, or reply approved or executed."
+  },
+  "liveAcceptance": "UNVERIFIED",
+  "ci": {
+    "commit": "6e418bd6c0b55d048d59d0f5813041cc025453d3",
+    "status": "PASS",
+    "url": "https://github.com/minhal-coding/inboxops-agent/actions/runs/35934537134"
+  }
+}

@@ -14,7 +14,7 @@ Development date: 2026-09-23. Windows, Node 24.18.0, npm 11.16.0. Public source 
 | `npm run evidence:fixture`                      | PASS            | Actual linked MCP reads/writes, fixture receipts, same send receipt on retry, one simulated send                  |
 | `npm audit`                                     | PASS            | Zero reported dependency vulnerabilities at verification time                                                     |
 | `npm run model:check`                           | **PASS**        | Ollama 0.34.3, explicit Qwen3 4B Instruct, JSON/tool selection and 768-dimensional embeddings                                              |
-| Live Google OAuth/freebusy/draft/event/send     | **UNVERIFIED**  | Client, APIs, test audience, label and owned calendar configured; explicit user connection pending                                                     |
+| Live Google OAuth/freebusy/draft/event/send     | **UNVERIFIED**  | OAuth connected; free/busy and approved writes remain unverified                                                     |
 | Live semantic retrieval                         | **PASS**        | Eight real EmbeddingGemma retrieval seed queries; exact chunk matches and unrelated rejection                                                                                 |
 | CodeRabbit                                      | **BLOCKED**     | Official installer rejected Windows/MINGW64; no review score claimed                                              |
 
@@ -46,6 +46,6 @@ Observed integration defects were fixed without relaxing action policy: missing 
 
 Final `npm run model:integration`: **PASS** for schedule, other, and uncertain classifications, with actual MCP reads and real embeddings against fictional Google adapters. The schedule reached awaiting approval with chunk `e9b1c48d45022c54`; all three cases recorded zero writes. [Complete decisions and timings](../evidence/model-integration.json), [exact command output](../evidence/model-integration-output.txt). Model decision time was approximately 104 seconds for scheduling and 51 seconds for each other case on this CPU session. This is three seed cases, not a reliability claim for arbitrary mail.
 
-The per-gate real-world acceptance table is maintained in [live acceptance](live-acceptance.md). Google gates remain BLOCKED; local inference and offline tests do not satisfy them.
+The per-gate real-world acceptance table is maintained in [live acceptance](live-acceptance.md). Google OAuth is connected; availability, approved writes, provider readback, duplicate retry, and disconnect remain unverified. Local inference and offline tests do not satisfy those gates.
 
 Final code revision `ea3ee80680bafe8756e92cb36084f39351f3326b`: remote CI **PASS**, [Actions run 35921222310](https://github.com/minhal-coding/inboxops-agent/actions/runs/35921222310), completed 2026-09-23T21:15:42Z. All steps passed, including 38 offline tests, build, Chromium/axe, actual SDK MCP inspection, fixture evidence and dependency audit. This workflow does not run local Ollama or Google-account acceptance.
