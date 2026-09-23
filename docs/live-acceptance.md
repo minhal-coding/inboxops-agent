@@ -26,6 +26,6 @@ If an action outcome is unknown, choose Reconcile. It reads external state and n
 | Approved Gmail send | BLOCKED | Requires user review and exact send approval in the app |
 | Provider readback | BLOCKED | No real action IDs exist yet; fixture IDs are not evidence |
 | Duplicate retry | BLOCKED | Requires the same actual approved action and provider count/readback; preserve the database |
-| Remote CI | PASS | [Actions for 516e026](https://github.com/minhal-coding/inboxops-agent/actions/runs/35917712077), offline adapters only |
+| Remote CI | PASS | [Actions for ea3ee80](https://github.com/minhal-coding/inboxops-agent/actions/runs/35921222310), offline adapters only |
 
 No real email was sent and no real Calendar event was created. Passing local inference, retrieval, or offline CI does not complete this live acceptance procedure. The browser was opened for automated Google Cloud setup at the user's request; account selection and the Cloud two-step verification prerequisite remain user-dependent. Port 4317 was occupied by the separate RepoMedic preview and was not stopped.
