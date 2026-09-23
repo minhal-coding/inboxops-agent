@@ -3,26 +3,47 @@ export interface ToolSpec {
   description?: string;
   inputSchema: unknown;
 }
+// Some local Qwen templates emit a closed thinking preamble even with think:false.
+// Only strip explicit framing; never hunt for JSON inside arbitrary prose.
+export function unwrapModelContent(content: string) {
+  const end = content.indexOf("</think>");
+  const answer = (end >= 0 ? content.slice(end + 8) : content).trim();
+  const fenced = /^```(?:json)?\s*\n([\s\S]*?)\n```$/.exec(answer);
+  return fenced ? fenced[1].trim() : answer;
+}
 export interface Model {
   name: string;
   fixture: boolean;
+  embedding?: string;
+  embeddingSpace?: string;
   decide(
     messages: unknown[],
     tools: ToolSpec[],
+    schema?: unknown,
   ): Promise<{
     content?: string;
     tool_calls?: {
       function: { name: string; arguments: Record<string, unknown> };
     }[];
   }>;
-  embed(text: string): Promise<number[]>;
+  embed(
+    text: string,
+    purpose?: "query" | "document",
+    title?: string,
+  ): Promise<number[]>;
 }
 export class Ollama implements Model {
   fixture = false;
   constructor(
-    public name = process.env.OLLAMA_MODEL || "qwen3:4b",
+    public name = process.env.OLLAMA_MODEL || "qwen3:4b-instruct-2507-q4_K_M",
     public embedding = process.env.OLLAMA_EMBED_MODEL || "embeddinggemma",
   ) {}
+  get embeddingSpace() {
+    return (
+      this.embedding +
+      (this.embedding.split(":")[0] === "embeddinggemma" ? ":retrieval-v1" : "")
+    );
+  }
   async request(path: string, body: unknown) {
     try {
       const r = await fetch(`http://127.0.0.1:11434/api/${path}`, {
@@ -39,7 +60,7 @@ export class Ollama implements Model {
       );
     }
   }
-  async decide(messages: unknown[], tools: ToolSpec[]) {
+  async decide(messages: unknown[], tools: ToolSpec[], schema?: unknown) {
     if (JSON.stringify(messages).length > 40000)
       throw Error("Model context budget exceeded.");
     const r = await this.request("chat", {
@@ -54,15 +75,37 @@ export class Ollama implements Model {
         },
       })),
       stream: false,
+      ...(schema ? { format: schema } : {}),
       think: false,
-      options: { temperature: 0, num_predict: 1000, num_ctx: 8192 },
+      options: {
+        temperature: schema ? 0 : 0.7,
+        top_p: 0.8,
+        top_k: 20,
+        seed: 42,
+        num_predict: 512,
+        num_ctx: 8192,
+        num_batch: 128,
+        num_thread: 6,
+      },
     });
+    if (typeof r.message?.content === "string")
+      r.message.content = unwrapModelContent(r.message.content);
     return r.message;
   }
-  async embed(text: string) {
+  async embed(
+    text: string,
+    purpose: "query" | "document" = "query",
+    title = "none",
+  ) {
+    const input =
+      this.embedding.split(":")[0] === "embeddinggemma"
+        ? purpose === "document"
+          ? `title: ${title} | text: ${text}`
+          : `task: search result | query: ${text}`
+        : text;
     const r = await this.request("embed", {
       model: this.embedding,
-      input: text,
+      input,
       truncate: false,
     });
     const v = r.embeddings?.[0];

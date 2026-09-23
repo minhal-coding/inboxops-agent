@@ -1,20 +1,22 @@
 # Dedicated test-account setup
 
-Status: implementation available; live OAuth and inference have not been verified. Use only a dedicated Google account and recipient addresses you own. No password, token, or client secret should be sent in chat.
+Status: real local inference and semantic retrieval passed; live Google OAuth remains unverified. Use only a dedicated Google account and recipient addresses you own. No password, token, or client secret should be sent in chat.
 
 ## 1. Local runtime and model
 
 Install Node.js 24+ if needed. Install Ollama for Windows from the [official download](https://ollama.com/download/windows), then in PowerShell:
 
 ```powershell
-ollama pull qwen3:4b
+ollama pull qwen3:4b-instruct-2507-q4_K_M
 ollama pull embeddinggemma
 ollama list
 npm ci
 npm run model:check
+npm run model:retrieval
+npm run model:integration
 ```
 
-These are free local models, but downloads require disk space and memory. The defaults are candidates for the observed 23.1 GiB RAM machine; hardware performance is unverified. Ollama must listen on `127.0.0.1:11434`. The smoke check must return PASS for structured JSON, tool selection, and embedding output. Never call fixture results live inference. To choose another installed tool-capable model, set `OLLAMA_MODEL`; set `OLLAMA_EMBED_MODEL` for embeddings and reimport preferences when changing it.
+These are free local models, but downloads require disk space and memory. These explicit model tags passed on the observed 23.1 GiB RAM machine using CPU inference. The generic qwen3:4b tag resolved to a Thinking variant and timed out; use the explicit Instruct tag above. Ollama must listen on `127.0.0.1:11434`. The smoke check must return PASS for structured JSON, tool selection, and embedding output. Never call fixture results live inference. To choose another installed tool-capable model, set `OLLAMA_MODEL`; set `OLLAMA_EMBED_MODEL` for embeddings and reimport preferences when changing it. EmbeddingGemma now uses documented query/document task prefixes and a versioned index namespace; reimport any documents indexed by the earlier build. The 0.35 similarity threshold passed eight seed queries, not a broad retrieval benchmark.
 
 ## 2. Create a test OAuth client (the user performs this)
 

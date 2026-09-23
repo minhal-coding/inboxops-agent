@@ -1,4 +1,4 @@
-# Live acceptance — not yet performed
+# Live acceptance — UNVERIFIED
 
 Required outcome: one real incoming test email → real local model decision → actual MCP reads and semantic source retrieval → Google free/busy → exact human approval in the running app → real draft, calendar hold, and one sent reply → verified provider IDs → no duplicate on retry.
 
@@ -12,4 +12,20 @@ Required outcome: one real incoming test email → real local model decision →
 
 If an action outcome is unknown, choose Reconcile. It reads external state and never repeats the write. If still unresolved, inspect the test mailbox/calendar manually and keep the action locked. Preserve the partial outcome; do not claim atomic completion.
 
-Current blockers: no running Ollama/model installation was found; no dedicated OAuth client/account has been configured or connected. No real email was sent, no real event was created, and live semantic retrieval is unverified.
+## Observed gates (2026-09-23)
+
+| Gate | Status | Sanitized evidence / blocker |
+| --- | --- | --- |
+| Real local model | PASS | [Actual smoke output](../evidence/model-check-output.txt): Ollama 0.34.3, Qwen3 4B Instruct, JSON and tool selection |
+| Real semantic retrieval | PASS | [Eight query scores](../evidence/retrieval-check.json), real EmbeddingGemma and approved fictional Markdown |
+| Real-model MCP loop with fictional Google | PASS | [Observed integration](../evidence/model-integration.json): three classifications, actual MCP reads, exact source chunk, zero writes |
+| Real OAuth | BLOCKED | Dedicated account not identified/connected; current Cloud browser session requires two-step verification |
+| Real Google free/busy | BLOCKED | Requires dedicated account consent and configured owned calendar |
+| Approved Gmail draft | BLOCKED | Requires user review and exact draft approval in the app |
+| Approved Calendar hold | BLOCKED | Requires user review and exact event approval in the app |
+| Approved Gmail send | BLOCKED | Requires user review and exact send approval in the app |
+| Provider readback | BLOCKED | No real action IDs exist yet; fixture IDs are not evidence |
+| Duplicate retry | BLOCKED | Requires the same actual approved action and provider count/readback; preserve the database |
+| Remote CI | PASS | [Actions for 516e026](https://github.com/minhal-coding/inboxops-agent/actions/runs/35917712077), offline adapters only |
+
+No real email was sent and no real Calendar event was created. Passing local inference, retrieval, or offline CI does not complete this live acceptance procedure. The browser was opened for automated Google Cloud setup at the user's request; account selection and the Cloud two-step verification prerequisite remain user-dependent. Port 4317 was occupied by the separate RepoMedic preview and was not stopped.

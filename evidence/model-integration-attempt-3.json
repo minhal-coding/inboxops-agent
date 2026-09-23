@@ -1,0 +1,223 @@
+{
+  "at": "2026-09-23T21:07:11.919Z",
+  "command": "npm run model:integration",
+  "mode": "REAL LOCAL MODEL + FICTIONAL GMAIL/CALENDAR; NO EXTERNAL WRITES",
+  "model": "qwen3:4b-instruct-2507-q4_K_M",
+  "embeddingModel": "embeddinggemma",
+  "status": "FAIL",
+  "cases": [
+    {
+      "id": "schedule",
+      "expected": "awaiting approval",
+      "status": "error",
+      "classification": "schedule",
+      "expectedClassification": "schedule",
+      "pass": false,
+      "error": "Model invented a citation.",
+      "tools": [
+        {
+          "tool": "calendar.freebusy",
+          "at": "2026-09-23T21:07:41.653Z"
+        },
+        {
+          "tool": "gmail.get_thread",
+          "at": "2026-09-23T21:07:58.124Z"
+        },
+        {
+          "tool": "knowledge.search",
+          "at": "2026-09-23T21:08:15.022Z"
+        }
+      ],
+      "citationIds": [],
+      "writeCount": 0,
+      "decisions": [
+        {
+          "elapsedMs": 28676,
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "e0oZK1du7SS7rz61CLkV6yn6AseS3PaV",
+              "function": {
+                "index": 0,
+                "name": "calendar.freebusy",
+                "arguments": {}
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 10064,
+          "role": "assistant",
+          "content": "{\"classification\":\"schedule\",\"citationIds\":[\"exact returned chunk IDs\"],\"question\":\"optional clarification\"}"
+        },
+        {
+          "elapsedMs": 6397,
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "nHmRJhW80n1IHynjItgiGOmS4bmu71hs",
+              "function": {
+                "index": 0,
+                "name": "gmail.get_thread",
+                "arguments": {}
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 16739,
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "oLcbTecOVuSnuioapY0dPb68LcefdRwZ",
+              "function": {
+                "index": 0,
+                "name": "knowledge.search",
+                "arguments": {
+                  "query": "user preferences for meeting durations"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 14149,
+          "role": "assistant",
+          "content": "{\"classification\":\"schedule\",\"citationIds\":[\"e9b1c48d45022c54\",\"fixture-thread-001\"],\"question\":\"optional clarification\"}"
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "expected": "other",
+      "status": "other",
+      "classification": "other",
+      "expectedClassification": "other",
+      "pass": true,
+      "tools": [
+        {
+          "tool": "gmail.get_thread",
+          "at": "2026-09-23T21:08:39.630Z"
+        },
+        {
+          "tool": "knowledge.search",
+          "at": "2026-09-23T21:08:39.778Z"
+        }
+      ],
+      "citationIds": [],
+      "writeCount": 0,
+      "decisions": [
+        {
+          "elapsedMs": 10145,
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "USuOE8R4Z3117QwrfOIugXAwx6uNCEov",
+              "function": {
+                "index": 0,
+                "name": "gmail.get_thread",
+                "arguments": {}
+              }
+            },
+            {
+              "id": "8uxXQvAJ3mhouG3uDBvW3aHVHFlJVRcq",
+              "function": {
+                "index": 1,
+                "name": "knowledge.search",
+                "arguments": {
+                  "query": "user scheduling preferences"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 25778,
+          "role": "assistant",
+          "content": "{\"classification\":\"other\",\"citationIds\":[\"e9b1c-48d45022c54\"],\"question\":\"The email does not request a meeting or schedule. It is a newsletter with no scheduling intent. Is there another action or clarification needed?\"}"
+        }
+      ]
+    },
+    {
+      "id": "uncertain",
+      "expected": "needs clarification",
+      "status": "other",
+      "classification": "other",
+      "expectedClassification": "uncertain",
+      "pass": false,
+      "tools": [
+        {
+          "tool": "gmail.get_thread",
+          "at": "2026-09-23T21:09:13.782Z"
+        },
+        {
+          "tool": "knowledge.search",
+          "at": "2026-09-23T21:09:13.947Z"
+        }
+      ],
+      "citationIds": [],
+      "writeCount": 0,
+      "decisions": [
+        {
+          "elapsedMs": 7922,
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "0sFYzu3N5mMkIagSLwBrMfNMqz3LoMmw",
+              "function": {
+                "index": 0,
+                "name": "gmail.get_thread",
+                "arguments": {}
+              }
+            },
+            {
+              "id": "8j0Z8nNYeNoZHmCM4xHuxxhdTPLAOqrj",
+              "function": {
+                "index": 1,
+                "name": "knowledge.search",
+                "arguments": {
+                  "query": "preferred meeting times"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 27104,
+          "role": "assistant",
+          "content": "{\"classification\":\"other\",\"citationIds\":[\"e9b1c-48d45022c54\"],\"question\":\"The email suggests a meeting next Tuesday, but no specific time is provided. Could you confirm the preferred time or date for the meeting?\"}"
+        }
+      ]
+    }
+  ],
+  "ollamaVersion": "0.34.3",
+  "models": [
+    {
+      "name": "qwen3:4b-instruct-2507-q4_K_M",
+      "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+      "size": 2497293803
+    },
+    {
+      "name": "embeddinggemma:latest",
+      "digest": "85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
+      "size": 621875917
+    }
+  ],
+  "retrieval": {
+    "relevant": [
+      {
+        "id": "e9b1c48d45022c54",
+        "title": "model-preferences.md",
+        "snippet": "For this fictional scheduling evaluation, normal working hours are Monday to Friday, 13:00–17:00 UTC. The preferred meeting duration is 30 minutes. Ask the user to resolve ambiguous dates and time zones.",
+        "score": 0.40287727186120237
+      }
+    ],
+    "irrelevant": [],
+    "pass": true
+  }
+}

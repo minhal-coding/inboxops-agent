@@ -46,7 +46,7 @@ There is no cross-provider transaction. A calendar hold can succeed while send f
 - Email text: at most 10,000 characters; plain text only; no attachment fetching/rendering.
 - Agent: six iterations, six read calls, three tool calls per model response; time checked between iterations at 180 seconds. A current 90-second model call may finish beyond that check boundary.
 - Model: loopback-only fixed Ollama endpoint, 90-second request timeout, 8,192 context tokens requested, 1,000 output tokens, 40,000 input-character guard; no automatic paid fallback.
-- Preferences: 12,000 characters per import, 700-character chunks, small bounded store, top three cosine matches at threshold 0.55; embedding model identity separates indexes. Fixture embeddings are deterministic categories, not semantic inference.
+- Preferences: 12,000 characters per import, 700-character chunks, small bounded store, top three cosine matches at threshold 0.35 (calibrated on eight fictional seed queries); embedding model and retrieval-prefix version separate indexes. Fixture embeddings are deterministic categories, not semantic inference.
 - Google: 15-second request timeout; automatic mutation retries disabled; one user-initiated attempt per action key.
 - New approvals: 15-minute plan lifetime; no new mutation after stale source/thread/account checks fail.
 

@@ -1,0 +1,79 @@
+{
+  "at": "2026-09-23T21:03:12.920Z",
+  "command": "npm run model:retrieval",
+  "mode": "REAL LOCAL EMBEDDINGS; FICTIONAL APPROVED DOCUMENT",
+  "model": "embeddinggemma",
+  "space": "embeddinggemma:retrieval-v1",
+  "threshold": 0.55,
+  "status": "FAIL",
+  "queries": [
+    {
+      "query": "How long should an appointment last, and when am I available for one?",
+      "relevant": true,
+      "score": 0.40287727186120237,
+      "beforeTaskPrefixesScore": 0.4633152981919179,
+      "chunkIds": [],
+      "pass": false
+    },
+    {
+      "query": "What are my working hours for scheduling meetings?",
+      "relevant": true,
+      "score": 0.5551458076171454,
+      "beforeTaskPrefixesScore": 0.5707998031382733,
+      "chunkIds": [
+        "e9b1c48d45022c54"
+      ],
+      "pass": true
+    },
+    {
+      "query": "What is my preferred meeting duration?",
+      "relevant": true,
+      "score": 0.5606204225840093,
+      "beforeTaskPrefixesScore": 0.5298721690791105,
+      "chunkIds": [
+        "e9b1c48d45022c54"
+      ],
+      "pass": true
+    },
+    {
+      "query": "What should happen if the date or time zone is ambiguous?",
+      "relevant": true,
+      "score": 0.4509062193881146,
+      "beforeTaskPrefixesScore": 0.6351737271025161,
+      "chunkIds": [],
+      "pass": false
+    },
+    {
+      "query": "How do black holes emit Hawking radiation?",
+      "relevant": false,
+      "score": 0.015716651019416602,
+      "beforeTaskPrefixesScore": 0.13775967531902547,
+      "chunkIds": [],
+      "pass": true
+    },
+    {
+      "query": "How do I cook spaghetti carbonara?",
+      "relevant": false,
+      "score": 0.01346936378408226,
+      "beforeTaskPrefixesScore": 0.13006030443491504,
+      "chunkIds": [],
+      "pass": true
+    },
+    {
+      "query": "Which hotel is closest to the airport?",
+      "relevant": false,
+      "score": 0.08324752385812649,
+      "beforeTaskPrefixesScore": 0.1692051057068619,
+      "chunkIds": [],
+      "pass": true
+    },
+    {
+      "query": "What is the current stock price of Apple?",
+      "relevant": false,
+      "score": 0.01684400322355294,
+      "beforeTaskPrefixesScore": 0.08881298141054458,
+      "chunkIds": [],
+      "pass": true
+    }
+  ]
+}

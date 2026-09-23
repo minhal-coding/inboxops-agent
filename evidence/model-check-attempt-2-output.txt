@@ -1,0 +1,19 @@
+
+> inboxops-agent@0.1.0 model:check
+> node --env-file-if-exists=.env --import tsx scripts/model-check.ts
+
+.env not found. Continuing without it.
+{
+  "status": "FAIL",
+  "command": "npm run model:check",
+  "at": "2026-09-23T20:55:43.302Z",
+  "model": "qwen3:4b",
+  "reason": "Local model unavailable or timed out. Start Ollama and install the configured models; no paid fallback is used.",
+  "observed": {
+    "ollamaVersion": "0.34.3",
+    "structuredResponse": {
+      "role": "assistant",
+      "content": "{\"ok\":true}"
+    }
+  }
+}

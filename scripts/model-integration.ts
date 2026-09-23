@@ -8,10 +8,14 @@ import { hash } from "../server/domain.ts";
 
 const decisions: unknown[] = [];
 class ObservedOllama extends Ollama {
-  async decide(messages: unknown[], tools: ToolSpec[]) {
+  async decide(messages: unknown[], tools: ToolSpec[], schema?: unknown) {
     const start = Date.now();
-    const result = await super.decide(messages, tools);
-    decisions.push({ elapsedMs: Date.now() - start, ...result });
+    const result = await super.decide(messages, tools, schema);
+    decisions.push({
+      elapsedMs: Date.now() - start,
+      structured: !!schema,
+      ...result,
+    });
     return result;
   }
 }
@@ -71,28 +75,39 @@ try {
   for (const c of [
     {
       id: "schedule",
+      subject: "Planning session",
       body: "Could we meet for 30 minutes? The user has confirmed the intended date and time in the scheduling form.",
       context: { start: start.toISOString(), timeZone: "UTC", duration: 30 },
       expected: "awaiting approval",
+      expectedClassification: "schedule",
     },
     {
       id: "other",
+      subject: "Monthly product newsletter",
       body: "Here is the monthly product newsletter. No meeting or reply is requested.",
       context: undefined,
       expected: "other",
+      expectedClassification: "other",
     },
     {
       id: "uncertain",
+      subject: "Meeting next Tuesday",
       body: "Can we meet Tuesday afternoon for 30 minutes?",
       context: undefined,
       expected: "needs clarification",
+      expectedClassification: "uncertain",
     },
   ]) {
     const store = new Store(":memory:");
     try {
       const provider = new FixtureProvider(store);
       const original = fixtureThread();
-      const thread = { ...original, body: c.body, fingerprint: hash(c.body) };
+      const thread = {
+        ...original,
+        subject: c.subject,
+        body: c.body,
+        fingerprint: hash([c.subject, c.body]),
+      };
       provider.list = async () => [thread];
       provider.thread = async () => thread;
       const knowledge = new Knowledge(store, model);
@@ -105,12 +120,25 @@ try {
       const [task] = await new Agent(store, provider, model, knowledge).process(
         c.context,
       );
+      const finalDecision = decisions.slice(from).at(-1) as
+        { content?: string } | undefined;
+      let classification: string | undefined;
+      try {
+        classification = JSON.parse(
+          finalDecision?.content || "{}",
+        ).classification;
+      } catch {
+        /* Report failure below. */
+      }
       const result = {
         id: c.id,
         expected: c.expected,
         status: task.status,
+        classification,
+        expectedClassification: c.expectedClassification,
         pass:
           task.status === c.expected &&
+          classification === c.expectedClassification &&
           (c.id !== "schedule" || !!task.plan?.citations.length),
         error: task.error,
         question: task.question,

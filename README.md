@@ -2,7 +2,7 @@
 
 **Local-first email-to-action software with a human approval boundary. Live acceptance: BLOCKED / UNVERIFIED.**
 
-This portfolio project implements a bounded scheduling workflow: inspect a selected test email, retrieve approved preferences, check availability through MCP, prepare an exact reply and calendar hold, require separate human approvals, and reconcile external receipts. The source and offline workflow are implemented. **No real local-model inference, Google event, or sent email has been verified on the development machine.** Do not mistake the fictional sandbox for a working live agent.
+This portfolio project implements a bounded scheduling workflow: inspect a selected test email, retrieve approved preferences, check availability through MCP, prepare an exact reply and calendar hold, require separate human approvals, and reconcile external receipts. The source and offline workflow are implemented. **Real local-model inference and semantic retrieval have now been verified with fictional data. Google OAuth, real events, and sent email remain unverified.** Do not mistake the fictional sandbox for a working live agent.
 
 ![Fixture dashboard — fictional message and scripted decisions](evidence/fixture-desktop.png)
 
@@ -35,7 +35,7 @@ Open **http://127.0.0.1:4317** (use this exact host). Click **Process new mail**
 
 Follow the self-contained [OAuth and model setup](docs/oauth-setup.md). Credentials belong in an external local JSON file, never in chat or Git. The default mode is `live`; it does not quietly fall back to fixtures.
 
-The development machine had Node 24.18.0, about 23.1 GiB RAM, AMD Radeon 880M integrated graphics, and no accessible Ollama executable/model service. `npm run model:check` failed to reach `127.0.0.1:11434`. Actual local inference and semantic embedding retrieval must pass before recording live acceptance. Qwen3 4B and embeddinggemma are configuration defaults, **not models proven to run here**.
+The development machine runs Ollama **0.34.3** on CPU, with **qwen3:4b-instruct-2507-q4_K_M** and **embeddinggemma**. The real smoke check passed JSON output, tool selection, and finite 768-dimensional embeddings. The initial `qwen3:4b` tag resolved to a Thinking variant and failed the bounded checks; the explicit Instruct tag avoids that ambiguity. [Model output](evidence/model-check-output.txt) and [retrieval scores](evidence/retrieval-check.json) record the observed results. These checks use fictional data and do not prove Google acceptance.
 
 ## Architecture
 
@@ -73,6 +73,8 @@ npm run mcp:inspect
 npm run evidence:fixture
 npm audit
 npm run model:check
+npm run model:retrieval
+npm run model:integration
 ```
 
 | Gate                                                       | Observed status                                                  |
@@ -82,7 +84,8 @@ npm run model:check
 | Chromium fixture flow, desktop/tablet/mobile, axe          | PASS locally                                                     |
 | MCP tools/list and tools/call                              | PASS with actual SDK client and fixture adapters                 |
 | SQLite retrieval with relevant/irrelevant query            | PASS with deterministic fixture embeddings                       |
-| Local LLM inference + semantic embedding retrieval         | **BLOCKED — Ollama unavailable**                                 |
+| Local LLM inference + semantic embedding retrieval         | **PASS — real smoke test and eight semantic retrieval seed queries**                                 |
+| Real model + fictional Google MCP loop | **PASS — [three cases, zero writes](evidence/model-integration.json)** |
 | Real test Google OAuth                                     | **UNVERIFIED — no test client/account connected**                |
 | Real free/busy, event, approved send, live duplicate check | **UNVERIFIED**                                                   |
 | Remote GitHub CI                                           | **PASS — [workflow activation run](https://github.com/minhal-coding/inboxops-agent/actions/runs/35916935765)** |

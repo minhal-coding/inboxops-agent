@@ -1,3 +1,8 @@
+
+> inboxops-agent@0.1.0 model:check
+> node --env-file-if-exists=.env --import tsx scripts/model-check.ts
+
+.env not found. Continuing without it.
 {
   "status": "PASS",
   "command": "npm run model:check",

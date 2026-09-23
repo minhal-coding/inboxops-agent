@@ -1,0 +1,19 @@
+
+> inboxops-agent@0.1.0 model:check
+> node --env-file-if-exists=.env --import tsx scripts/model-check.ts
+
+.env not found. Continuing without it.
+{
+  "status": "FAIL",
+  "command": "npm run model:check",
+  "at": "2026-09-23T20:52:06.508Z",
+  "model": "qwen3:4b",
+  "reason": "Unexpected token 'O', \"Okay, the \"... is not valid JSON",
+  "observed": {
+    "ollamaVersion": "0.34.3",
+    "structuredResponse": {
+      "role": "assistant",
+      "content": "Okay, the user wants me to return a JSON object with {\"ok\": true}. Let me check the instructions again.\n\nThey said \"Return JSON only: {\"ok\":true}\". So I need to make sure I output exactly that JSON without any extra text or explanations. The key here is to avoid adding anything else. Just the JSON string. Let me confirm the syntax. The JSON should have a key \"ok\" with the value true. No extra spaces or characters. Let me write it out: {\"ok\": true}. Wait, in JSON, the boolean true is lowercase. So it's correct. I need to make sure there's no trailing comma or anything. The user specified the exact structure, so I'll output that. No need for any additional text. Just the JSON. Let me double-check. Yep, that's the correct format. Alright, time to return it.\n</think>\n\n{\"ok\":true}"
+    }
+  }
+}

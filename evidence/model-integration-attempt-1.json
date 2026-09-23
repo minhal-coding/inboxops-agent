@@ -1,0 +1,61 @@
+{
+  "at": "2026-09-23T20:54:44.313Z",
+  "command": "npm run model:integration",
+  "mode": "REAL LOCAL MODEL + FICTIONAL GMAIL/CALENDAR; NO EXTERNAL WRITES",
+  "model": "qwen3:4b",
+  "embeddingModel": "embeddinggemma",
+  "status": "FAIL",
+  "cases": [
+    {
+      "id": "schedule",
+      "expected": "awaiting approval",
+      "status": "error",
+      "pass": false,
+      "error": "Local model unavailable or timed out. Start Ollama and install the configured models; no paid fallback is used.",
+      "tools": [],
+      "citationIds": [],
+      "writeCount": 0,
+      "decisions": []
+    },
+    {
+      "id": "other",
+      "expected": "other",
+      "status": "error",
+      "pass": false,
+      "error": "Local model unavailable or timed out. Start Ollama and install the configured models; no paid fallback is used.",
+      "tools": [],
+      "citationIds": [],
+      "writeCount": 0,
+      "decisions": []
+    },
+    {
+      "id": "uncertain",
+      "expected": "needs clarification",
+      "status": "error",
+      "pass": false,
+      "error": "Local model unavailable or timed out. Start Ollama and install the configured models; no paid fallback is used.",
+      "tools": [],
+      "citationIds": [],
+      "writeCount": 0,
+      "decisions": []
+    }
+  ],
+  "ollamaVersion": "0.34.3",
+  "models": [
+    {
+      "name": "qwen3:4b",
+      "digest": "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
+      "size": 2497293931
+    },
+    {
+      "name": "embeddinggemma:latest",
+      "digest": "85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
+      "size": 621875917
+    }
+  ],
+  "retrieval": {
+    "relevant": [],
+    "irrelevant": [],
+    "pass": false
+  }
+}

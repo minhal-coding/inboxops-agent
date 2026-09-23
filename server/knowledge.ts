@@ -2,6 +2,9 @@ import { z } from "zod";
 import { hash, type Citation } from "./domain.ts";
 import type { Store } from "./store.ts";
 import type { Model } from "./model.ts";
+// Seed calibration: relevant 0.40–0.56, unrelated 0.01–0.09 with EmbeddingGemma prefixes.
+// This is a small local acceptance set, not a general retrieval benchmark.
+export const RETRIEVAL_MIN_SCORE = 0.35;
 export const documentSchema = z
   .object({
     title: z
@@ -36,7 +39,7 @@ export class Knowledge {
       rows.push({
         id: hash([d.title, i, chunks[i]]).slice(0, 16),
         text: chunks[i],
-        vector: await this.model.embed(chunks[i]),
+        vector: await this.model.embed(chunks[i], "document", d.title),
       });
     this.store.db.exec("BEGIN");
     try {
@@ -51,7 +54,9 @@ export class Knowledge {
             JSON.stringify(r.vector),
             this.model.fixture
               ? this.model.name
-              : (this.model as any).embedding,
+              : this.model.embeddingSpace ||
+                  this.model.embedding ||
+                  this.model.name,
           );
       this.store.db.exec("COMMIT");
     } catch (e) {
@@ -67,7 +72,7 @@ export class Knowledge {
     const q = await this.model.embed(z.string().min(1).max(500).parse(query));
     const model = this.model.fixture
       ? this.model.name
-      : (this.model as any).embedding;
+      : this.model.embeddingSpace || this.model.embedding || this.model.name;
     return (
       this.store.db
         .prepare("SELECT * FROM documents WHERE model=?")
@@ -89,7 +94,7 @@ export class Knowledge {
           score: v.length === q.length && denominator ? dot / denominator : 0,
         };
       })
-      .filter((r) => r.score >= 0.55)
+      .filter((r) => r.score >= RETRIEVAL_MIN_SCORE)
       .sort((a, b) => b.score - a.score)
       .slice(0, 3);
   }

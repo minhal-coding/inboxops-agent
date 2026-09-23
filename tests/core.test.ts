@@ -65,6 +65,75 @@ async function planned() {
   assert.equal(task.status, "awaiting approval", task.error);
   return { ...s, task };
 }
+
+test("premature model finalization gets bounded feedback and must actually check availability", async () => {
+  const model = new FixtureModel();
+  const original = model.decide.bind(model);
+  let premature = true;
+  model.decide = async (messages: any[], tools: any[]) => {
+    const reads = messages.filter((m) => m.role === "tool");
+    if (premature && reads.length === 2) {
+      premature = false;
+      return {
+        content: JSON.stringify({
+          classification: "schedule",
+          citationIds: [],
+        }),
+      };
+    }
+    return original(messages, tools);
+  };
+  const s = await setup(model);
+  try {
+    const [task] = await s.agent.process(context());
+    assert.equal(task.status, "awaiting approval", task.error);
+    assert.ok(task.trace.some((t) => t.tool === "calendar.freebusy"));
+    assert.ok(
+      s.store
+        .timeline(task.id)
+        .some((e) => e.event === "model decision incomplete"),
+    );
+    assert.equal(s.store.actions(task.id).length, 0);
+  } finally {
+    s.store.close();
+  }
+});
+
+test("real-model final response receives only retrieved citation choices after completed reads", async () => {
+  const scripted = new FixtureModel();
+  let constrained = false;
+  const model: Model = {
+    name: "schema-contract double",
+    fixture: false,
+    embed: scripted.embed.bind(scripted),
+    decide: async (messages, tools, schema: any) => {
+      if (!schema) return scripted.decide(messages, tools);
+      constrained = true;
+      assert.equal(tools.length, 0);
+      const ids = schema.properties.citationIds.items.enum;
+      assert.equal(ids.length, 1);
+      assert.ok(
+        (messages as any[])
+          .filter((m) => m.role === "tool")
+          .some((m) => m.tool_name === "calendar.freebusy"),
+      );
+      return {
+        content: JSON.stringify({
+          classification: "schedule",
+          citationIds: ids,
+        }),
+      };
+    },
+  };
+  const s = await setup(model);
+  try {
+    const [task] = await s.agent.process(context());
+    assert.equal(task.status, "awaiting approval", task.error);
+    assert.equal(constrained, true);
+  } finally {
+    s.store.close();
+  }
+});
 test("real MCP list/call plus policy rejection on write without grant", async () => {
   const s = await setup();
   const bundle = createToolServer(s.provider, s.knowledge, s.approval, {

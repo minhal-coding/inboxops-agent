@@ -60,7 +60,7 @@ try {
     );
   writeFileSync(
     resolve(".env"),
-    `INBOXOPS_MODE=live\nPORT=4317\nOLLAMA_MODEL=qwen3:4b\nOLLAMA_EMBED_MODEL=embeddinggemma\nGOOGLE_OAUTH_CLIENT_FILE="${normalized}"\nTEST_ACCOUNT=${account}\nTEST_RECIPIENTS=${recipients.join(",")}\nTEST_LABEL_NAME=InboxOps-Test\nTEST_CALENDAR_ID=${calendar}\n`,
+    `INBOXOPS_MODE=live\nPORT=4317\nOLLAMA_MODEL=qwen3:4b-instruct-2507-q4_K_M\nOLLAMA_EMBED_MODEL=embeddinggemma\nGOOGLE_OAUTH_CLIENT_FILE="${normalized}"\nTEST_ACCOUNT=${account}\nTEST_RECIPIENTS=${recipients.join(",")}\nTEST_LABEL_NAME=InboxOps-Test\nTEST_CALENDAR_ID=${calendar}\n`,
     { flag: "wx", mode: 0o600 },
   );
   console.log(
